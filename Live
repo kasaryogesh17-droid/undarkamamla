@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UndarkaMamla</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body { font-family: Poppins; margin:0; }
+
+/* NAV */
+.navbar {
+  display:flex; justify-content:space-between;
+  padding:15px 30px; border-bottom:1px solid #eee;
+}
+.cart-icon { cursor:pointer; }
+
+/* HERO */
+.hero { text-align:center; padding:60px; background:#f5f5f5; }
+
+/* PRODUCTS */
+.products { padding:30px; }
+.grid { display:flex; flex-wrap:wrap; justify-content:center; }
+.product {
+  width:220px; margin:10px; border:1px solid #eee; padding:10px;
+}
+.product img { width:100%; height:250px; object-fit:cover; }
+button {
+  width:100%; padding:10px; background:black; color:white; border:none;
+}
+
+/* CART */
+.cart {
+  position:fixed; right:-400px; top:0;
+  width:350px; height:100%;
+  background:white; box-shadow:-2px 0 10px rgba(0,0,0,0.1);
+  padding:20px; transition:0.3s;
+}
+.cart.active { right:0; }
+
+.cart-item { display:flex; justify-content:space-between; margin:10px 0; }
+.total { font-weight:bold; margin-top:20px; }
+
+.close-btn { cursor:pointer; float:right; }
+
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+  <h2>UndarkaMamla</h2>
+  <div class="cart-icon" onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Comfort bhi, Confidence bhi 😌</h1>
+  <button>Shop Now</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products">
+  <h2>Bestsellers</h2>
+
+  <div class="grid">
+
+    <div class="product">
+      <img src="bra1.jpg">
+      <h3>T-Shirt Bra</h3>
+      <p>₹1299</p>
+      <button onclick="addToCart('T-Shirt Bra',1299)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="bra2.jpg">
+      <h3>Lace Set</h3>
+      <p>₹2499</p>
+      <button onclick="addToCart('Lace Set',2499)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="bra3.jpg">
+      <h3>Push-Up Bra</h3>
+      <p>₹1599</p>
+      <button onclick="addToCart('Push-Up Bra',1599)">Add to Cart</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- CART -->
+<div class="cart" id="cart">
+  <span class="close-btn" onclick="toggleCart()">❌</span>
+  <h2>Your Cart</h2>
+
+  <div id="cart-items"></div>
+
+  <p class="total">Total: ₹<span id="total">0</span></p>
+
+  <button onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+
+let cart = [];
+
+function toggleCart() {
+  document.getElementById("cart").classList.toggle("active");
+}
+
+function addToCart(name, price) {
+  let item = cart.find(i => i.name === name);
+
+  if(item){
+    item.qty++;
+  } else {
+    cart.push({name, price, qty:1});
+  }
+
+  updateCart();
+}
+
+function updateCart() {
+  let cartItems = document.getElementById("cart-items");
+  let total = 0;
+  let count = 0;
+
+  cartItems.innerHTML = "";
+
+  cart.forEach((item, index) => {
+    total += item.price * item.qty;
+    count += item. qty;
+
+    cartItems.innerHTML +=.`
+      <div class="cart-item">
+        ${item.name} x${item.qty}
+        <span onclick="removeItem(${index})" style="cursor:pointer;">❌</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText = total;
+  document.getElementById("count").innerText = count;
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  updateCart();
+}
+
+function checkout(){
+  alert("Order placed! (Demo)");
+}
+
+</script>
+
+</body>
+</html>
